@@ -1,4 +1,4 @@
-class Account < ApplicationRecord
+class Account
   include Mongoid::Document
   field :website, type: String
   field :email, type: String

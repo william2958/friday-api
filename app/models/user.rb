@@ -15,5 +15,6 @@ class User < ApplicationRecord
   	validates_presence_of :first_name, :message => "ERROR: First name is required!"
   	validates_presence_of :last_name, :message => "ERROR: Last name is required!"
 
+  	embeds_many :accounts, class_name: "Account"
 
 end

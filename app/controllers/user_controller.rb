@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-	skip_before_action :authenticate!, only: [:create]
+	skip_before_action :authenticate!, only: [:create, :confirm_email]
 
 	def index
 		if current_user
@@ -14,8 +14,14 @@ class UserController < ApplicationController
 
 	def create
 		@user = User.create!(user_params)
-	    @user.save
+
 	    render json: @user
+
+	    @user.confirm_token = SecureRandom.urlsafe_base64.to_s
+	 	@user.save!
+
+	 	UserMailer.welcome_email(@user).deliver_now
+	    
 	end
 
 	def destroy
@@ -31,6 +37,16 @@ class UserController < ApplicationController
 				errors: ["Unable to locate account for destruction."]
 			}, status: 404
 		end
+	end
+
+	def confirm_email
+	    user = User.find_by(confirm_token: params[:id])
+	    if user
+	      user.email_confirmed = true
+	      user.confirm_token = ""
+	      user.save
+	    else	  
+	    end
 	end
 
 	private

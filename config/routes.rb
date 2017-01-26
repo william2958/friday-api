@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   patch 'accounts', to: 'account#update'
   delete 'accounts', to: 'account#destroy'
 
+  get 'confirm_email/:id', to: 'user#confirm_email', as: 'confirm_email'
+
 end

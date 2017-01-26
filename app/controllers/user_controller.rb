@@ -1,6 +1,17 @@
 class UserController < ApplicationController
 	skip_before_action :authenticate!, only: [:create]
 
+	def index
+		if current_user
+			render json: current_user
+		else	
+			render json: {
+				status: 'error',
+				errors: ['Cannot find the account']
+			}, status: 404
+		end
+	end
+
 	def create
 		@user = User.create!(user_params)
 	    @user.save

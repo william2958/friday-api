@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   post 'sign_up', to: 'user#create'
   delete 'user', to: 'user#destroy'
+  get 'user', to: 'user#index'
 
   get 'accounts', to: 'account#index'
   post 'accounts', to: 'account#create'

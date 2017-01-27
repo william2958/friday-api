@@ -1,20 +1,25 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+	# For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  post 'sign_in', to: 'authentication#authenticate'
+	# Get sign in data
+	post 'sign_in', to: 'authentication#authenticate'
 
-  post 'sign_up', to: 'user#create'
-  delete 'user', to: 'user#destroy'
-  get 'user', to: 'user#index'
+	# Let the user sign up
+	post 'sign_up', to: 'user#create'
+	delete 'user', to: 'user#destroy'
+	get 'user', to: 'user#index'
 
-  get 'accounts', to: 'account#index'
-  post 'accounts', to: 'account#create'
-  patch 'accounts', to: 'account#update'
-  delete 'accounts', to: 'account#destroy'
+	# Account actions
+	get 'accounts', to: 'account#index'
+	post 'accounts', to: 'account#create'
+	patch 'accounts', to: 'account#update'
+	delete 'accounts', to: 'account#destroy'
 
-  get 'confirm_email/:id', to: 'user#confirm_email', as: 'confirm_email'
+	# Receive the confirm email data, which is just a access token
+	post 'confirm_email', to: 'user#confirm_email'
 
-  get 'forgot_password', to: 'user#forgot_password'
-  get 'password_reset/:id', to: 'user#password_reset', as: 'password_reset'
+	# Handle the user forgetting passwords
+	get 'forgot_password', to: 'user#forgot_password'
+	post 'change_password', to: 'user#password_reset'
 
 end

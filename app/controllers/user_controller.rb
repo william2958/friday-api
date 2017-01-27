@@ -1,6 +1,10 @@
 class UserController < ApplicationController
-	skip_before_action :authenticate!, only: [:create, :confirm_email, :forgot_password]
+	# Controls all user actions
 
+	# Authenticate all the actions except for the following
+	skip_before_action :authenticate!, only: [:create, :confirm_email, :forgot_password, :password_reset]
+
+	# Get the user object
 	def index
 		if current_user
 			render json: current_user
@@ -12,6 +16,7 @@ class UserController < ApplicationController
 		end
 	end
 
+	# Create a new user object
 	def create
 		@user = User.create!(user_params)
 
@@ -24,6 +29,7 @@ class UserController < ApplicationController
 	    
 	end
 
+	# Destroy a user object
 	def destroy
 		if current_user
 			current_user.destroy
@@ -39,22 +45,27 @@ class UserController < ApplicationController
 		end
 	end
 
+	# Confirm the user by checking the confirm_token passed in the url
 	def confirm_email
-	    user = User.find_by(confirm_token: params[:id])
+	    user = User.find_by(confirm_token: params[:confirm_token])
 	    if user
-	      user.email_confirmed = true
-	      user.confirm_token = ""
-	      user.save	  
+	    	# Reset all the actions
+			user.email_confirmed = true
+			user.confirm_token = ""
+			user.save	  
 	    end
 	end
 
+	# Send a forgot password email to a specific user by email
 	def forgot_password
 
+		# Find the user through email
 		user = User.find_by(email: params[:email])
 		if user
 			user.confirm_token = SecureRandom.urlsafe_base64.to_s
 			user.save!
 
+			# User UserMailer to send the email
 			UserMailer.forgot_password(user).deliver_now
 			render json: {
 				status: 'success',
@@ -64,10 +75,24 @@ class UserController < ApplicationController
 
 	end
 
+	# Reset the password
 	def password_reset
-		user = User.find_by(confirm_token: params[:id])
+		# Find the user with the confir_token sent by the front-end
+		user = User.find_by(confirm_token: params[:confirm_token])
 		if user
-			redirect_to "google.ca"
+			# If found, set the password to what was send with the token
+			user.password = params[:password]
+			user.save!
+			render json: {
+				status: 'success',
+				message: 'Account password has been changed.'
+			}
+		else
+			# Or else render a failure message
+			render json: {
+				status: 'error',
+				message: 'Unable to change the password. Maybe confirmation token is wrong?'
+			}
 		end
 	end
 
@@ -75,7 +100,7 @@ class UserController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.permit(:email, :first_name, :last_name, :password)
+      params.permit(:email, :first_name, :last_name, :password, :confirm_token)
     end
 
 end

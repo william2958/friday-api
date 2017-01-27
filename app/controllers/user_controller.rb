@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-	skip_before_action :authenticate!, only: [:create, :confirm_email]
+	skip_before_action :authenticate!, only: [:create, :confirm_email, :forgot_password]
 
 	def index
 		if current_user
@@ -44,9 +44,31 @@ class UserController < ApplicationController
 	    if user
 	      user.email_confirmed = true
 	      user.confirm_token = ""
-	      user.save
-	    else	  
+	      user.save	  
 	    end
+	end
+
+	def forgot_password
+
+		user = User.find_by(email: params[:email])
+		if user
+			user.confirm_token = SecureRandom.urlsafe_base64.to_s
+			user.save!
+
+			UserMailer.forgot_password(user).deliver_now
+			render json: {
+				status: 'success',
+				message: 'Password Reset email sent!'
+			}
+		end
+
+	end
+
+	def password_reset
+		user = User.find_by(confirm_token: params[:id])
+		if user
+			redirect_to "google.ca"
+		end
 	end
 
 	private

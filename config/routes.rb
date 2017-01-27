@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :items
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   post 'sign_in', to: 'authentication#authenticate'
@@ -14,5 +13,8 @@ Rails.application.routes.draw do
   delete 'accounts', to: 'account#destroy'
 
   get 'confirm_email/:id', to: 'user#confirm_email', as: 'confirm_email'
+
+  get 'forgot_password', to: 'user#forgot_password'
+  get 'password_reset/:id', to: 'user#password_reset', as: 'password_reset'
 
 end

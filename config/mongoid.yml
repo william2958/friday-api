@@ -148,3 +148,4 @@ production:
             uri: <%= ENV['MONGOLAB_URI'] %>
             options:
                 connect_timeout: 15
+                raise_not_found_error: false

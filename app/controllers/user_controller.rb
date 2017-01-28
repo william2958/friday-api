@@ -23,7 +23,7 @@ class UserController < ApplicationController
 			render json: {
 		 		status: 'error',
 		 		message: 'Email has already been taken!'
-		 	}, status: 422
+		 	}, status: 422 
 		else
 
 			@user = User.create!(user_params)

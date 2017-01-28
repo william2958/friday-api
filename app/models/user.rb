@@ -11,8 +11,8 @@ class User
 	validates_presence_of :password_digest, :message => "ERROR: Password is required!"
 	validates_uniqueness_of :email
 
-  field :confirm_token, type: String, default: ''
-  field :email_confirmed, type: Boolean, default: false
+	field :confirm_token, type: String, default: ''
+	field :email_confirmed, type: Boolean, default: false
 
 	field :first_name, type: String
 	field :last_name, type: String

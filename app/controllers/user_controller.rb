@@ -18,14 +18,24 @@ class UserController < ApplicationController
 
 	# Create a new user object
 	def create
-		@user = User.create!(user_params)
 
-	    render json: @user
+		if User.find_by(email: user_params[:email])
+			render json: {
+		 		status: 'error',
+		 		message: 'Email has already been taken!'
+		 	}, status: 422
+		else
 
-	    @user.confirm_token = SecureRandom.urlsafe_base64.to_s
-	 	@user.save!
+			@user = User.create!(user_params)
 
-	 	UserMailer.welcome_email(@user).deliver_now
+		    render json: @user
+
+		    @user.confirm_token = SecureRandom.urlsafe_base64.to_s
+		 	@user.save!
+
+		 	UserMailer.welcome_email(@user).deliver_now
+		 	
+		end
 	    
 	end
 
@@ -52,7 +62,16 @@ class UserController < ApplicationController
 	    	# Reset all the actions
 			user.email_confirmed = true
 			user.confirm_token = ""
-			user.save	  
+			user.save	
+			render json: {
+				status: 'success',
+				message: 'Account successfully confirmed!'
+			}  
+		else
+			render json: {
+				status: 'error',
+				message: 'Account could not be confirmed'
+			}, status: 422
 	    end
 	end
 
@@ -71,6 +90,11 @@ class UserController < ApplicationController
 				status: 'success',
 				message: 'Password Reset email sent!'
 			}
+		else
+			render json: {
+				status: 'error',
+				message: 'That email has not been registered!'
+			}, status: 404
 		end
 
 	end
@@ -91,8 +115,8 @@ class UserController < ApplicationController
 			# Or else render a failure message
 			render json: {
 				status: 'error',
-				message: 'Unable to change the password. Maybe confirmation token is wrong?'
-			}
+				message: 'Unable to change the password.'
+			}, status: 404
 		end
 	end
 

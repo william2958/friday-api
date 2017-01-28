@@ -117,9 +117,11 @@ production:
             uri: <%= ENV['MONGOLAB_URI'] %>
             options:
                 connect_timeout: 15
+    options:
+        raise_not_found_error: false
 
 # Configure Mongoid specific options. (optional)
-options:
+# options:
     # Includes the root model name in json serialization. (default: false)
     # include_root_in_json: false
 
@@ -132,7 +134,7 @@ options:
 
     # Raise an error when performing a #find and the document is not found.
     # (default: true)
-    raise_not_found_error: false
+    # raise_not_found_error: false
 
     # Raise an error when defining a scope with the same name as an
     # existing method. (default: false)

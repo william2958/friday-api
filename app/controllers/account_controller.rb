@@ -28,8 +28,18 @@ class AccountController < ApplicationController
 
   # Destroy an account
   def destroy
-    current_user.accounts.find(params[:_id]).delete
-    render json: {deleted: true}
+    @account = current_user.accounts.find(params[:_id])
+    if @account
+      render json: {
+        account: current_user.accounts.find(params[:_id]),
+        deleted: true
+      }, status: 200
+      @account.delete
+    else
+      render json: {
+        deleted: false
+      }, status: 404
+    end
   end
 
   private

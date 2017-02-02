@@ -22,7 +22,9 @@ class AccountController < ApplicationController
 
   # Update an account
   def update
-    @account = current_user.accounts.find(params[:_id]).update_attributes(account_params)
+    @account = current_user.accounts.find(account_params[:_id])
+    @account.update(account_params)
+    @account.save
     render json: @account
   end
 

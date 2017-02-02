@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 	# Account actions
 	get 'accounts', to: 'account#index'
 	post 'accounts', to: 'account#create'
-	patch 'accounts', to: 'account#update'
+	post 'accounts_edit', to: 'account#update'
 	post 'accounts_delete', to: 'account#destroy'
 
 	# Receive the confirm email data, which is just a access token

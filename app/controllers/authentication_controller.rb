@@ -3,7 +3,7 @@ class AuthenticationController < ApplicationController
 
 	# This authenticates the user by password password
 	# This is called by the router from '/sign_in'
-	def authenticate
+	def authenticate 
 
 		# Check that the user exists
 		if User.find_by(email: params[:email])

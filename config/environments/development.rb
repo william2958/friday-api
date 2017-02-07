@@ -44,24 +44,14 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.delivery_method = :smtp
-  # config.action_mailer.smtp_settings = {
-  #   address:              'smtp.gmail.com',
-  #   port:                 587,
-  #   domain:               'gmail.com',
-  #   user_name:            'crimsonlockconfirmation@gmail.com',
-  #   password:             '#Cocacola101',
-  #   authentication:       'plain',
-  #   enable_starttls_auto: true  
-  # }
   config.action_mailer.smtp_settings = {
-    address:              'smtp.zoro.com',
+    address:              'smtp.gmail.com',
     port:                 587,
-    domain:               'assistantfriday.com',
-    user_name:            'no-reply@assistantfriday.com',
+    domain:               'gmail.com',
+    user_name:            'crimsonlockconfirmation@gmail.com',
     password:             '#Cocacola101',
     authentication:       'plain',
-    enable_starttls_auto: true,
-    tls: true
+    enable_starttls_auto: true  
   }
 
   # Use an evented file watcher to asynchronously detect changes in source code,

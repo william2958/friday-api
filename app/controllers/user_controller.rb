@@ -80,7 +80,7 @@ class UserController < ApplicationController
 
 		# Find the user through email
 		user = User.find_by(email: params[:email])
-		if user
+		if user && user.email_confirmed
 			user.confirm_token = SecureRandom.urlsafe_base64.to_s
 			user.save!
 
@@ -91,10 +91,17 @@ class UserController < ApplicationController
 				message: 'Password Reset email sent!'
 			}
 		else
-			render json: {
-				status: 'error',
-				message: 'That email has not been registered!'
-			}, status: 404
+			if !user.email_confirmed
+				render json: {
+					status: 'error',
+					message: 'You need to confirm your email first!'
+				}, status: 404
+			else
+				render json: {
+					status: 'error',
+					message: 'That email has not been registered!'
+				}, status: 404
+			end
 		end
 
 	end
@@ -103,7 +110,7 @@ class UserController < ApplicationController
 	def password_reset
 		# Find the user with the confir_token sent by the front-end
 		user = User.find_by(confirm_token: params[:confirm_token])
-		if user && user.email_confirmed
+		if user
 			# If found, set the password to what was send with the token
 			user.password = params[:password]
 			user.save!

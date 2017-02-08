@@ -103,7 +103,7 @@ class UserController < ApplicationController
 	def password_reset
 		# Find the user with the confir_token sent by the front-end
 		user = User.find_by(confirm_token: params[:confirm_token])
-		if user
+		if user && user.email_confirmed
 			# If found, set the password to what was send with the token
 			user.password = params[:password]
 			user.save!

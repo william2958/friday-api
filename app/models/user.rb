@@ -14,6 +14,8 @@ class User
 	field :confirm_token, type: String, default: ''
 	field :email_confirmed, type: Boolean, default: false
 
+	field :first_time, type: Boolean, default: true
+
 	field :first_name, type: String
 	field :last_name, type: String
 	validates_presence_of :first_name, :message => "ERROR: First name is required!"

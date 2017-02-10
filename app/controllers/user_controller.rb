@@ -7,7 +7,14 @@ class UserController < ApplicationController
 	# Get the user object
 	def index
 		if current_user
-			render json: current_user
+			render json: {
+				first_name: current_user.first_name,
+				last_name: current_user.last_name,
+				accounts: current_user.accounts,
+				first_time: current_user.first_time
+			}
+			current_user.first_time = false
+			current_user.save!
 		else	
 			render json: {
 				status: 'error',

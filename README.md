@@ -1,24 +1,5 @@
-# README
+# RETIRED CODE - NO LONGER IN USE
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# This is the Ruby-on-Rails backend used for Friday3.0, a previous version.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+This accepts authorization requests, and handles all requests thereafter using JWT tokens. Runs with a MongoDB database hosted in the cloud.
